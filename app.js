@@ -1,29 +1,26 @@
 const express = require("express");
 
 const app = express();
+const {adminAuth, userAuth} = require('./middlewares/auth')
 
-app.use(
-  "/dashboard",
-  [
-    (req, res, next) => {
-      res.send("Response 1");
-      next();
-    },
-    (req, res, next) => {
-      res.send("Response 2");
-      next();
-    },
-  ],
-  (req, res) => {
-    res.send("Response 3");
-  },
-  (req, res) => {
-    res.send("Response 4");
-  },
-  (req, res) => {
-    res.send("Response 5");
-  }
-);
+app.use('/admin', adminAuth)
+app.use('/user', userAuth)
+
+app.get('/admin/data', (req,res)=>{
+    res.send('admin data')
+})
+
+app.get('/user/list', (req, res)=>{
+    res.send('user listed fetch')
+})
+
+// app.use(
+//   "/dashboard",
+//     (req, res, next) => {
+//       res.send("Response 1");
+//       next();
+//     }
+// );
 
 app.use("/", (req, res) => {
   res.send("Welcome");

@@ -1,23 +1,34 @@
-const express = require('express')
+const express = require("express");
 
-const app = express()
+const app = express();
 
-app.get('/user', (req, res)=>{
-    res.send({name:"Kunal"})
-})
-app.post('/user', (req, res)=>{
-    res.send({name:"Kunal",
-        lastname:'Chaudhari'
-    })
-})
-app.use('/dashboard',(req,res)=>{
-    res.send('dashboard')
-})
+app.use(
+  "/dashboard",
+  [
+    (req, res, next) => {
+      res.send("Response 1");
+      next();
+    },
+    (req, res, next) => {
+      res.send("Response 2");
+      next();
+    },
+  ],
+  (req, res) => {
+    res.send("Response 3");
+  },
+  (req, res) => {
+    res.send("Response 4");
+  },
+  (req, res) => {
+    res.send("Response 5");
+  }
+);
 
-app.use('/',(req,res)=>{
-    res.send('Welcome')
-})
+app.use("/", (req, res) => {
+  res.send("Welcome");
+});
 
- app.listen(3000, ()=>{
-    console.log('listened to 3000')
- })
+app.listen(3000, () => {
+  console.log("listened to 3000");
+});
